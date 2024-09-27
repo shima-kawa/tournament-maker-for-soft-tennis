@@ -13,7 +13,7 @@ Sub insertPlayerInformation()
     xlLastRow = playerListWS.Cells(Rows.count, plgNoCol).row
     lastRow = playerListWS.Cells(xlLastRow, plgNoCol).End(xlUp).row
     
-    If (teamsRange.Value <> lastRow + 1) Then
+    If (teamsRange.Value <> lastRow - 1) Then
         MsgBox "エラー。選手一覧の組数と参加組数が一致しません。"
         Exit Sub
     End If

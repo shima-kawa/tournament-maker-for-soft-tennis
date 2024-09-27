@@ -33,9 +33,13 @@ Dim teams As Integer
 Dim basePlayerId As Integer
 Dim playerId As Integer
 Dim seeds As New seedarray
+Dim baseTeams As Integer
+Dim startPlgNo As Integer
+
 
 testWorksheet.Cells.Clear
 
+startPlgNo = plgStartNoRange.Value
 basePlayerId = 0
 playerId = 0
 teams = teamsRange
@@ -57,7 +61,7 @@ For baseMatchID = baseTeams / 2 To baseTeams - 1
     basePlayerId = basePlayerId + 1
     If (seeds.seed(basePlayerId) <= teams) Then
         playerId = playerId + 1
-        testWorksheet.Cells(baseMatchID, 2) = playerId
+        testWorksheet.Cells(baseMatchID, 2) = playerId + startPlgNo - 1
     Else
         testWorksheet.Cells(baseMatchID, 2) = 0
     End If
@@ -65,7 +69,7 @@ For baseMatchID = baseTeams / 2 To baseTeams - 1
     basePlayerId = basePlayerId + 1
     If (seeds.seed(basePlayerId) <= teams) Then
         playerId = playerId + 1
-        testWorksheet.Cells(baseMatchID, 3) = playerId
+        testWorksheet.Cells(baseMatchID, 3) = playerId + startPlgNo - 1
     Else
         testWorksheet.Cells(baseMatchID, 3) = 0
     End If
@@ -260,3 +264,16 @@ Function determineNextAddress()
     
     
 End Function
+
+Function insertProgramNumber(startNum As Integer, teamNum As Integer)
+    Dim i As Integer
+    
+    For i = 1 To teamNum
+        playerListWS.Cells(i + 1, 1) = startNum + i - 1
+    Next i
+End Function
+
+Sub a()
+    setUp
+    Call insertProgramNumber(plgStartNoRange.Value, teamsRange.Value)
+End Sub
