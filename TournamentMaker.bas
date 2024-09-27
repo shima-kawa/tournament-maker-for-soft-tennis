@@ -525,3 +525,7 @@ Function drawRedBorders(startRow As Integer, endRow As Integer, startCol As Inte
         .Color = RGB(255, 0, 0)
     End With
 End Function
+' トーナメントのヘッダーを設定
+Function setHeader()
+    tournamentWS.PageSetup.CenterHeader = categoryRange.Value & " (&P)"
+End Function
