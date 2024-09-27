@@ -264,3 +264,16 @@ Function determineNextAddress()
     
     
 End Function
+
+Function insertProgramNumber(startNum As Integer, teamNum As Integer)
+    Dim i As Integer
+    
+    For i = 1 To teamNum
+        playerListWS.Cells(i + 1, 1) = startNum + i - 1
+    Next i
+End Function
+
+Sub a()
+    setUp
+    Call insertProgramNumber(plgStartNoRange.Value, teamsRange.Value)
+End Sub

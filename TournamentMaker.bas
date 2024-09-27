@@ -26,6 +26,7 @@ Sub makeTournament()
     Dim leftRow As Integer
     Dim rightRow As Integer
     Dim centerRow As Integer
+    Dim startPlgNum As Integer
     
     
 
@@ -42,6 +43,7 @@ End With
     baseTeams = culNumberOfBaseTeams(teams)
     maxNumPerPage = maxNumPerPageRange
     roundEachPage = culNumberOfNeedRounds(teams)
+    startPlgNum = plgStartNoRange.Value
     betweenTwoLinesFlg = False
     
     pageNum = getPageNumber(teams, maxNumPerPage)
@@ -77,7 +79,7 @@ End With
     End If
     ' Debug.Print page & "ページ, 左側 " & teamNumEachPage(page, LEFT) & "組"
     ' 右側
-    teamNumEachPage(page, RIGHT) = teams + 1 - firstTeamNumberEachPage(page, RIGHT)
+    teamNumEachPage(page, RIGHT) = teams + startPlgNum - firstTeamNumberEachPage(page, RIGHT)
     If (maxRowperPage < teamNumEachPage(page, RIGHT)) Then
         maxRowperPage = teamNumEachPage(page, RIGHT)
     End If
@@ -299,7 +301,6 @@ End With
         With tournamentWS
             .Range(.Cells(leftRow, G_startTournamentArea + round - 1), .Cells(leftRow, G_endTournamentArea - round + 1)).Borders(xlEdgeTop).LineStyle = xlContinuous
         End With
-        MsgBox match
         Call setAddress(match, LEFT, leftRow, G_startTournamentArea + round - 2)
         Call setAddress(match, RIGHT, leftRow, G_endTournamentArea - round + 2)
         match = match + 1
