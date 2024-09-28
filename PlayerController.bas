@@ -27,6 +27,10 @@ Sub insertPlayerInformation()
         Set p = findPlayer(tournamentWS.Cells(row, G_numLeftCol))
         tournamentWS.Cells(row, G_nameLeftCol) = p.AName
         tournamentWS.Cells(row + 1, G_nameLeftCol) = p.BName
+        With tournamentWS
+            .Cells(row, G_nameLeftCol).VerticalAlignment = xlBottom
+            .Cells(row + 1, G_nameLeftCol).VerticalAlignment = xlTop
+        End With
         If (p.ATeam = p.BTeam) Then
             With tournamentWS
                 .Range(.Cells(row, G_teamLeftCol), .Cells(row + 1, G_teamLeftCol)).Merge
@@ -38,6 +42,12 @@ Sub insertPlayerInformation()
             With tournamentWS
                 .Cells(row, G_teamLeftCol) = p.ATeam
                 .Cells(row + 1, G_teamLeftCol) = p.BTeam
+                .Cells(row, G_teamLeftCol - 1).VerticalAlignment = xlBottom
+                .Cells(row, G_teamLeftCol).VerticalAlignment = xlBottom
+                .Cells(row, G_teamLeftCol + 1).VerticalAlignment = xlBottom
+                .Cells(row + 1, G_teamLeftCol - 1).VerticalAlignment = xlTop
+                .Cells(row + 1, G_teamLeftCol).VerticalAlignment = xlTop
+                .Cells(row + 1, G_teamLeftCol + 1).VerticalAlignment = xlTop
             End With
         End If
         
@@ -50,6 +60,10 @@ Sub insertPlayerInformation()
         Set p = findPlayer(tournamentWS.Cells(row, G_numRightCol))
         tournamentWS.Cells(row, G_nameRightCol) = p.AName
         tournamentWS.Cells(row + 1, G_nameRightCol) = p.BName
+        With tournamentWS
+            .Cells(row, G_nameRightCol).VerticalAlignment = xlBottom
+            .Cells(row + 1, G_nameRightCol).VerticalAlignment = xlTop
+        End With
         If (p.ATeam = p.BTeam) Then
             With tournamentWS
                 .Range(.Cells(row, G_teamRightCol), .Cells(row + 1, G_teamRightCol)).Merge
@@ -61,6 +75,12 @@ Sub insertPlayerInformation()
             With tournamentWS
                 .Cells(row, G_teamRightCol) = p.ATeam
                 .Cells(row + 1, G_teamRightCol) = p.BTeam
+                .Cells(row, G_teamRightCol - 1).VerticalAlignment = xlBottom
+                .Cells(row, G_teamRightCol).VerticalAlignment = xlBottom
+                .Cells(row, G_teamRightCol + 1).VerticalAlignment = xlBottom
+                .Cells(row + 1, G_teamRightCol - 1).VerticalAlignment = xlTop
+                .Cells(row + 1, G_teamRightCol).VerticalAlignment = xlTop
+                .Cells(row + 1, G_teamRightCol + 1).VerticalAlignment = xlTop
             End With
         End If
     Next row
