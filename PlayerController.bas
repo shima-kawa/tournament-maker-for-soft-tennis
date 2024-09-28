@@ -4,6 +4,7 @@ Sub insertPlayerInformation()
     setUp
     
     '--------------------------------------------------------------------------------
+    Application.DisplayAlerts = False  '--- 確認メッセージを非表示
     
     Dim row As Integer
     Dim lastRow As Integer
@@ -26,8 +27,29 @@ Sub insertPlayerInformation()
         Set p = findPlayer(tournamentWS.Cells(row, G_numLeftCol))
         tournamentWS.Cells(row, G_nameLeftCol) = p.AName
         tournamentWS.Cells(row + 1, G_nameLeftCol) = p.BName
-        tournamentWS.Cells(row, G_teamLeftCol) = p.ATeam
-        tournamentWS.Cells(row + 1, G_teamLeftCol) = p.BTeam
+        With tournamentWS
+            .Cells(row, G_nameLeftCol).VerticalAlignment = xlBottom
+            .Cells(row + 1, G_nameLeftCol).VerticalAlignment = xlTop
+        End With
+        If (p.ATeam = p.BTeam) Then
+            With tournamentWS
+                .Range(.Cells(row, G_teamLeftCol), .Cells(row + 1, G_teamLeftCol)).Merge
+                .Range(.Cells(row, G_teamLeftCol - 1), .Cells(row + 1, G_teamLeftCol - 1)).Merge
+                .Range(.Cells(row, G_teamLeftCol + 1), .Cells(row + 1, G_teamLeftCol + 1)).Merge
+                .Cells(row, G_teamLeftCol) = p.ATeam
+            End With
+        Else
+            With tournamentWS
+                .Cells(row, G_teamLeftCol) = p.ATeam
+                .Cells(row + 1, G_teamLeftCol) = p.BTeam
+                .Cells(row, G_teamLeftCol - 1).VerticalAlignment = xlBottom
+                .Cells(row, G_teamLeftCol).VerticalAlignment = xlBottom
+                .Cells(row, G_teamLeftCol + 1).VerticalAlignment = xlBottom
+                .Cells(row + 1, G_teamLeftCol - 1).VerticalAlignment = xlTop
+                .Cells(row + 1, G_teamLeftCol).VerticalAlignment = xlTop
+                .Cells(row + 1, G_teamLeftCol + 1).VerticalAlignment = xlTop
+            End With
+        End If
         
     Next row
     
@@ -38,9 +60,31 @@ Sub insertPlayerInformation()
         Set p = findPlayer(tournamentWS.Cells(row, G_numRightCol))
         tournamentWS.Cells(row, G_nameRightCol) = p.AName
         tournamentWS.Cells(row + 1, G_nameRightCol) = p.BName
-        tournamentWS.Cells(row, G_teamRightCol) = p.ATeam
-        tournamentWS.Cells(row + 1, G_teamRightCol) = p.BTeam
+        With tournamentWS
+            .Cells(row, G_nameRightCol).VerticalAlignment = xlBottom
+            .Cells(row + 1, G_nameRightCol).VerticalAlignment = xlTop
+        End With
+        If (p.ATeam = p.BTeam) Then
+            With tournamentWS
+                .Range(.Cells(row, G_teamRightCol), .Cells(row + 1, G_teamRightCol)).Merge
+                .Range(.Cells(row, G_teamRightCol - 1), .Cells(row + 1, G_teamRightCol - 1)).Merge
+                .Range(.Cells(row, G_teamRightCol + 1), .Cells(row + 1, G_teamRightCol + 1)).Merge
+                .Cells(row, G_teamRightCol) = p.ATeam
+            End With
+        Else
+            With tournamentWS
+                .Cells(row, G_teamRightCol) = p.ATeam
+                .Cells(row + 1, G_teamRightCol) = p.BTeam
+                .Cells(row, G_teamRightCol - 1).VerticalAlignment = xlBottom
+                .Cells(row, G_teamRightCol).VerticalAlignment = xlBottom
+                .Cells(row, G_teamRightCol + 1).VerticalAlignment = xlBottom
+                .Cells(row + 1, G_teamRightCol - 1).VerticalAlignment = xlTop
+                .Cells(row + 1, G_teamRightCol).VerticalAlignment = xlTop
+                .Cells(row + 1, G_teamRightCol + 1).VerticalAlignment = xlTop
+            End With
+        End If
     Next row
+    Application.DisplayAlerts = True   '--- 確認メッセージを表示
 End Sub
 Function findPlayer(plgNo As Integer) As player
     

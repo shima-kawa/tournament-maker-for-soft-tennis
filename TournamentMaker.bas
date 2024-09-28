@@ -314,15 +314,31 @@ End With
     ' 僼僅儞僩偺愝掕
     For i = G_startTournamentArea To G_endTournamentArea
         With tournamentWS.Columns(i).Font
-            .Name = "俵俽 俹僑僔僢僋"
+            .Name = "HG娵恨集窶-PRO"
             .Size = 8
             .Color = RGB(255, 0, 0)
         End With
     Next i
     
     ' 懱嵸偺挷惍
-    tournamentWS.Columns(G_numLeftCol).HorizontalAlignment = xlCenter
-    tournamentWS.Columns(G_numRightCol).HorizontalAlignment = xlCenter
+    With tournamentWS
+        .Cells.Font.Size = 9
+        .Columns(G_numLeftCol).HorizontalAlignment = xlCenter
+        .Columns(G_numRightCol).HorizontalAlignment = xlCenter
+        .Columns(G_teamLeftCol - 1).HorizontalAlignment = xlRight
+        .Columns(G_teamLeftCol).HorizontalAlignment = xlCenter
+        .Columns(G_teamLeftCol + 1).HorizontalAlignment = xlLeft
+        .Columns(G_teamRightCol - 1).HorizontalAlignment = xlRight
+        .Columns(G_teamRightCol).HorizontalAlignment = xlCenter
+        .Columns(G_teamRightCol + 1).HorizontalAlignment = xlLeft
+        
+        .Columns(G_numLeftCol).Font.Name = "HG娵恨集窶-PRO"
+        .Columns(G_numRightCol).Font.Name = "HG娵恨集窶-PRO"
+        .Columns(G_nameLeftCol).Font.Name = "HG娵恨集窶-PRO"
+        .Columns(G_nameRightCol).Font.Name = "HG娵恨集窶-PRO"
+        .Columns(G_teamLeftCol).Font.Name = "HG娵恨集窶-PRO"
+        .Columns(G_teamRightCol).Font.Name = "HG娵恨集窶-PRO"
+    End With
         
 '偍傑偠側偄夝彍
 With Application
