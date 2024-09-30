@@ -339,6 +339,8 @@ End With
         .Columns(G_teamLeftCol).Font.Name = "HGä€∫ﬁºØ∏M-PRO"
         .Columns(G_teamRightCol).Font.Name = "HGä€∫ﬁºØ∏M-PRO"
     End With
+    
+    isTournamentGeneratedRange.Value = "çœ"
         
 'Ç®Ç‹Ç∂Ç»Ç¢âèú
 With Application
