@@ -275,5 +275,62 @@ End Function
 
 Sub a()
     setUp
-    Call insertProgramNumber(plgStartNoRange.Value, teamsRange.Value)
+    'Call insertProgramNumber(plgStartNoRange.Value, teamsRange.Value)
+    MsgBox "エラー。対象の試合が見つかりませんでした。", _
+        Buttons:=vbExclamation, _
+        Title:="エラー"
+
+    'Call changeNumOfGames(1, 5)
 End Sub
+' 指定したラウンド(round 回戦)のゲーム数を変更する
+Function changeNumOfGames(round As Integer, numGames As Integer)
+
+    Dim i As Integer
+    Dim lastRow As Integer
+    Dim countOfChanges As Integer
+    Dim msgRes As VbMsgBoxResult
+    
+    lastRow = matchesWS.Cells(matchesWS.Rows.count, 1).End(xlUp).row
+    countOfChanges = 0
+    
+    ' 指定したラウンドの試合に、終了済みの試合があるかチェック
+    For i = 2 To lastRow
+        If (matchesWS.Cells(i, G_roundCol).Value = round) Then
+            If (matchesWS.Cells(i, G_statusCol).Value = MATCH_FINISHED) Then
+                MsgBox "ゲーム数を変更できません。指定したラウンドの試合の一部がすでに" & matchesWS.Cells(i, G_matchGamesCol) & "ゲームで終了しています。強制的に変更する場合は、「試合」シートを直接編集してください。", _
+                    Buttons:=vbCritical, _
+                    Title:="エラー"
+                Exit Function
+            End If
+            countOfChanges = countOfChanges + 1
+        End If
+    Next i
+    
+    If (countOfChanges = 0) Then
+        MsgBox "エラー。対象の試合が見つかりませんでした。", _
+                Buttons:=vbExclamation, _
+                Title:="エラー"
+        Exit Function
+    End If
+    
+    ' ゲーム数変更確認
+    msgRes = MsgBox(countOfChanges & "件の試合を" & numGames & "ゲームに変更します。", _
+        Buttons:=vbOKCancel, _
+        Title:="確認" _
+    )
+    
+    If (msgRes <> vbOK) Then
+        Exit Function
+    End If
+    
+    ' ゲーム数変更
+    For i = 2 To lastRow
+        If (matchesWS.Cells(i, G_roundCol).Value = round) Then
+            matchesWS.Cells(i, G_matchGamesCol) = numGames
+        End If
+    Next i
+    
+    MsgBox "変更が完了しました"
+
+End Function
+
