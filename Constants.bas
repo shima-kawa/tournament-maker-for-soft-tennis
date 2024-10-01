@@ -6,11 +6,15 @@ Public baseMatchesWS As Worksheet
 Public matchesWS As Worksheet
 Public playerListWS As Worksheet
 Public judgePaperWS As Worksheet
+Public entryPlayersWS As Worksheet
 
 Public teamsRange As Range
 Public plgStartNoRange As Range
 Public maxNumPerPageRange As Range
 Public categoryRange As Range
+Public isTournamentGeneratedRange As Range
+Public isEditModeRange As Range
+Public isInsertedPlayerInfo As Range
 
 ' 試合シート用
 Public Const G_idCol As Integer = 1
@@ -68,10 +72,17 @@ Sub setUp()
     Set playerListWS = ThisWorkbook.Worksheets("選手一覧")
     Set judgePaperWS = ThisWorkbook.Worksheets("個人ジャッペ")
     
+    If (flgExsistSheet("エントリー名簿")) Then
+        Set entryPlayersWS = ThisWorkbook.Worksheets("エントリー名簿")
+    End If
+    
     Set teamsRange = mainWS.Range("B1")
     Set plgStartNoRange = mainWS.Range("B4")
     Set maxNumPerPageRange = mainWS.Range("B2")
     Set categoryRange = mainWS.Range("B3")
+    Set isTournamentGeneratedRange = mainWS.Range("B7")
+    Set isEditModeRange = mainWS.Range("B8")
+    Set isInsertedPlayerInfo = mainWS.Range("B9")
     
     If ((G_endTournamentArea - G_startTournamentArea) Mod 2 = 0) Then
         MsgBox エラー｡トーナメント範囲が無効です｡範囲は偶数個のセルが必要です｡
