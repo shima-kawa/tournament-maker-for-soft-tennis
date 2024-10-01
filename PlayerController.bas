@@ -85,6 +85,8 @@ Sub insertPlayerInformation()
         End If
     Next row
     Application.DisplayAlerts = True   '--- 確認メッセージを表示
+    
+    isInsertedPlayerInfo.Value = "済"
 End Sub
 Function findPlayer(plgNo As Integer) As player
     
@@ -105,4 +107,20 @@ Function findPlayer(plgNo As Integer) As player
     End If
     
     Set findPlayer = p
+End Function
+
+Function insertPlayer(plgNo As Integer, p As player)
+    Dim row As Integer
+    Dim res As Range
+    ' プログラムNoの検索
+    Set res = playerListWS.Range("A:A").Find(plgNo, LookAt:=xlWhole, SearchOrder:=xlByRows)
+
+    If (res Is Nothing) Then
+        MsgBox "エラー: プログラムNo" & plgNo & "に対応する行が見つかりません。"
+        Exit Function
+    End If
+    playerListWS.Cells(res.row, playerANameCol) = p.AName
+    playerListWS.Cells(res.row, playerBNameCol) = p.BName
+    playerListWS.Cells(res.row, playerATeamCol) = p.ATeam
+    playerListWS.Cells(res.row, playerBTeamCol) = p.BTeam
 End Function

@@ -341,6 +341,8 @@ End With
     End With
     
     isTournamentGeneratedRange.Value = "Ï"
+    isEditModeRange.Value = ""
+    isInsertedPlayerInfo.Value = ""
         
 '‚¨‚Ü‚¶‚È‚¢‰ğœ
 With Application

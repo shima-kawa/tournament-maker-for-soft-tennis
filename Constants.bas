@@ -14,6 +14,7 @@ Public maxNumPerPageRange As Range
 Public categoryRange As Range
 Public isTournamentGeneratedRange As Range
 Public isEditModeRange As Range
+Public isInsertedPlayerInfo As Range
 
 ' 試合シート用
 Public Const G_idCol As Integer = 1
@@ -81,6 +82,7 @@ Sub setUp()
     Set categoryRange = mainWS.Range("B3")
     Set isTournamentGeneratedRange = mainWS.Range("B7")
     Set isEditModeRange = mainWS.Range("B8")
+    Set isInsertedPlayerInfo = mainWS.Range("B9")
     
     If ((G_endTournamentArea - G_startTournamentArea) Mod 2 = 0) Then
         MsgBox エラー｡トーナメント範囲が無効です｡範囲は偶数個のセルが必要です｡

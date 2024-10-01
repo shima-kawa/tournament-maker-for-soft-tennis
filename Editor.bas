@@ -65,7 +65,7 @@ Sub startEditMode()
     
     ' セルへの関数の挿入------------------------------------------------------------------------
     ' 左側
-    lastRow = tournamentWS.Cells(matchesWS.Rows.count, leftEntryNumCol + 1).End(xlUp).row
+    lastRow = tournamentWS.Cells(tournamentWS.Rows.count, leftEntryNumCol + 1).End(xlUp).row
     For i = 1 To lastRow Step 2
         With tournamentWS
             With .Range(.Cells(i, leftEntryNumCol), .Cells(i + 1, leftEntryNumCol))
@@ -82,7 +82,7 @@ Sub startEditMode()
     Next i
 
     ' 右側
-    lastRow = tournamentWS.Cells(matchesWS.Rows.count, rightEntryNumCol - 1).End(xlUp).row
+    lastRow = tournamentWS.Cells(tournamentWS.Rows.count, rightEntryNumCol - 1).End(xlUp).row
     For i = 1 To lastRow Step 2
         With tournamentWS
             With .Range(.Cells(i, rightEntryNumCol), .Cells(i + 1, rightEntryNumCol))
@@ -122,10 +122,14 @@ Sub finishEditMode()
         Exit Sub
     End If
     
+    Call updatePlayerListFromTournament(G_numLeftCol, G_numRightCol + 2)
+    
     tournamentWS.Columns(G_numLeftCol).Delete
     tournamentWS.Columns(G_numRightCol + 1).Delete
     
     isEditModeRange.Value = "済"
+    
+    Call insertPlayerInformation
 End Sub
 ' ワークシートが存在するかチェックする
 ' 参考：https://qiita.com/Zitan/items/1b671510d3da5557ba1a
@@ -154,4 +158,58 @@ Function makeEntryPlayersSheet()
     For i = 2 To teamsRange.Value + 1
         entryPlayersWS.Cells(i, 1) = i - 1
     Next i
+End Function
+
+Function updatePlayerListFromTournament(leftEntryNumCol As Integer, rightEntryNumCol As Integer)
+    Dim row As Integer
+    Dim entryNum As Integer
+    Dim tournamentNum As Integer
+    Dim lastRow As Integer
+    Dim p As player
+    
+    ' 左側
+    lastRow = tournamentWS.Cells(tournamentWS.Rows.count, leftEntryNumCol).End(xlUp).row
+    
+    For row = 1 To lastRow
+        If (tournamentWS.Cells(row, leftEntryNumCol) <> "" And tournamentWS.Cells(row, leftEntryNumCol + 1) <> "") Then
+            entryNum = tournamentWS.Cells(row, leftEntryNumCol)
+            tournamentNum = tournamentWS.Cells(row, leftEntryNumCol + 1)
+            Set p = findEntryPlayer(entryNum)
+            Call insertPlayer(tournamentNum, p)
+        End If
+    Next row
+    
+    ' 右側
+    lastRow = tournamentWS.Cells(tournamentWS.Rows.count, rightEntryNumCol).End(xlUp).row
+    
+    For row = 1 To lastRow
+        If (tournamentWS.Cells(row, rightEntryNumCol) <> "" And tournamentWS.Cells(row, rightEntryNumCol - 1) <> "") Then
+            entryNum = tournamentWS.Cells(row, rightEntryNumCol)
+            tournamentNum = tournamentWS.Cells(row, rightEntryNumCol - 1)
+            Set p = findEntryPlayer(entryNum)
+            Call insertPlayer(tournamentNum, p)
+        End If
+    Next row
+End Function
+
+Function findEntryPlayer(key As Integer) As player
+    Dim row As Integer
+    Dim lastRow As Integer
+    Dim p As player
+    
+    Set p = New player
+    
+    lastRow = entryPlayersWS.Cells(entryPlayersWS.Rows.count, 1).End(xlUp).row
+    
+    For row = 1 To lastRow
+        If (entryPlayersWS.Cells(row, 1) = key) Then
+            p.AName = entryPlayersWS.Cells(row, 2)
+            p.BName = entryPlayersWS.Cells(row, 3)
+            p.ATeam = entryPlayersWS.Cells(row, 4)
+            p.BTeam = entryPlayersWS.Cells(row, 5)
+            
+            Set findEntryPlayer = p
+            Exit Function
+        End If
+    Next row
 End Function
