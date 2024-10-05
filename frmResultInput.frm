@@ -218,7 +218,7 @@ Private Function checkInputLeftNum(setID As Integer, ByRef Cancel As MSForms.Ret
     End If
 End Function
 
-Function checkInputResults() As Boolean
+Private Function checkInputResults() As Boolean
     Dim i As Integer
     Dim leftCount As Integer
     Dim rightCount As Integer
@@ -282,7 +282,7 @@ CONTINUE:
 
 End Function
 
-Function clear1Row(setID As Integer)
+Private Function clear1Row(setID As Integer)
     Dim ONleftNum As String
     Dim ONleftNameA As String
     Dim ONleftNameB As String
