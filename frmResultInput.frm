@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmResultInput 
    Caption         =   "結果登録"
    ClientHeight    =   7575
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   11115
+   ClientLeft      =   150
+   ClientTop       =   570
+   ClientWidth     =   13890
    OleObjectBlob   =   "frmResultInput.frx":0000
    StartUpPosition =   1  'オーナー フォームの中央
 End
@@ -22,7 +22,7 @@ End Sub
 Private Sub btnInput_Click()
     Dim i As Integer
     Dim validCount As Integer
-    Dim r As result
+    Dim r As Result
     
     ' ON : Object Name
     Dim ONleftPlayerNum As String
@@ -50,7 +50,7 @@ Private Sub btnInput_Click()
             ONleftPlayerNum = "txtLeftPlayerNum" & i
             ONleftCount = "txtLeftScore" & i
             ONrightCount = "txtRightScore" & i
-            Set r = New result
+            Set r = New Result
             r.matchID = matches(i).matchID
             r.leftScore = Me.Controls(ONleftCount)
             r.rightScore = Me.Controls(ONrightCount)

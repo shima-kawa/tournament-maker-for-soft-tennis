@@ -202,7 +202,7 @@ Function setAddress(baseMatchID As Integer, selectedSide As Integer, row As Inte
     Dim i As Integer
     Dim side As Integer
     
-    lastRow = matchesWS.Cells(matchesWS.Rows.count, 1).End(xlUp).row
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     
     If (col < (G_endTournamentArea - G_startTournamentArea + 1) / 2 + G_startTournamentArea) Then
         side = LEFT
@@ -239,7 +239,7 @@ Function determineNextAddress()
     Dim baseId As Integer
     Dim nextBaseId As Integer
     
-    lastRow = matchesWS.Cells(matchesWS.Rows.count, 1).End(xlUp).row
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     
     For i = 2 To lastRow - 1 '1行目はタイトル、最終行は決勝なので、除外
         baseId = matchesWS.Cells(i, G_baseMatchIdCol)
@@ -290,7 +290,7 @@ Function changeNumOfGames(round As Integer, numGames As Integer)
     Dim countOfChanges As Integer
     Dim msgRes As VbMsgBoxResult
     
-    lastRow = matchesWS.Cells(matchesWS.Rows.count, 1).End(xlUp).row
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     countOfChanges = 0
     
     ' 指定したラウンドの試合に、終了済みの試合があるかチェック
