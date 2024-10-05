@@ -10,7 +10,7 @@ Sub ExportAll()
     Dim TargetBook                                  '// 処理対象ブックオブジェクト
     
     '// ブックが開かれていない場合は個人用マクロブック（personal.xlsb）を対象とする
-    If (Workbooks.count = 1) Then
+    If (Workbooks.Count = 1) Then
         Set TargetBook = ThisWorkbook
     '// ブックが開かれている場合は表示しているブックを対象とする
     Else
