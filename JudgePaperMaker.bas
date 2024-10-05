@@ -52,7 +52,7 @@ Sub printJudgePaper()
     
     ' àÛç¸
     
-    lastRow = matchesWS.Cells(matchesWS.Rows.count, 1).End(xlUp).row
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     For i = 1 To lastRow
         If (matchesWS.Cells(i, G_statusCol) = MATCH_ALLOWED_NOPRINT) Then
             clearJudgePaper
@@ -79,8 +79,8 @@ Sub printJudgePaper()
                     RightTeamRange.Value = p.ATeam & vbLf & p.BTeam
                 End If
             End With
-            tempDir = tempDir & i & ".pdf"
-            judgePaperWS.ExportAsFixedFormat Type:=xlTypePDF, Filename:=tempDir
+            'tempDir = tempDir & i & ".pdf"
+            'judgePaperWS.ExportAsFixedFormat Type:=xlTypePDF, Filename:=tempDir
             'judgePaperWS.PrintOut
             matchesWS.Cells(i, G_statusCol) = MATCH_ALLOWED_PRINTED
         End If

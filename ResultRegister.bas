@@ -1,5 +1,5 @@
 Attribute VB_Name = "ResultRegister"
-Function registerResult(r As result)
+Function registerResult(r As Result)
 
     setUp
     
@@ -11,7 +11,7 @@ Function registerResult(r As result)
     Dim m As match
     Dim whichWinner As Integer
     
-    lastRow = matchesWS.Cells(matchesWS.Rows.count, 1).End(xlUp).row
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     'r.idを探す
     For row = 1 To lastRow
         If (r.matchID = matchesWS.Cells(row, G_idCol)) Then
@@ -80,7 +80,7 @@ Function findMatch(key As Integer) As match
     Dim row As Integer
     Dim matchObj As match
     
-    lastRow = matchesWS.Cells(matchesWS.Rows.count, 1).End(xlUp).row
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     
     For row = 2 To lastRow
         If (matchesWS.Cells(row, G_statusCol) = MATCH_ALLOWED_PRINTED And matchesWS.Cells(row, G_leftCol) = key) Then
@@ -96,3 +96,71 @@ Function findMatch(key As Integer) As match
     Set findMatch = Nothing
 End Function
 
+' 指定したステータスの試合の検索
+Function findAllMatchesWithStatus(key As Integer, status As Integer) As match()
+
+    Dim lastRow As Integer
+    Dim row As Integer
+    Dim matchObj As match
+    Dim matches() As match
+    Dim index As Integer
+
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
+    
+    ReDim matches(0)
+    
+    index = UBound(matches)
+    
+    For row = 2 To lastRow
+        If (matchesWS.Cells(row, G_statusCol) = status And (matchesWS.Cells(row, G_leftCol) = key Or matchesWS.Cells(row, G_rightCol) = key)) Then
+            index = index + 1
+            ReDim Preserve matches(index)
+            Set matches(index) = New match
+            matches(index).matchID = matchesWS.Cells(row, G_idCol)
+            matches(index).leftNum = matchesWS.Cells(row, G_leftCol)
+            matches(index).rightNum = matchesWS.Cells(row, G_rightCol)
+            matches(index).matchGames = matchesWS.Cells(row, G_matchGamesCol)
+        End If
+    Next row
+    
+    findAllMatchesWithStatus = matches
+
+End Function
+
+Function findResult(matchID As Integer) As Result
+    Dim lastRow As Integer
+    Dim row As Integer
+    Dim resultObj As Result
+    
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
+    
+    For row = 2 To lastRow
+        If (matchesWS.Cells(row, G_idCol) = matchID) Then
+            If (matchesWS.Cells(row, G_statusCol) = MATCH_FINISHED) Then
+                Set resultObj = New Result
+                resultObj.matchID = matchID
+                resultObj.leftScore = matchesWS.Cells(row, G_scoreLeftCol)
+                resultObj.rightScore = matchesWS.Cells(row, G_scoreRightCol)
+                resultObj.winner = matchesWS.Cells(row, G_winnerCol)
+            Else
+                Set findResult = Nothing
+            End If
+            Set findResult = resultObj
+            Exit Function
+        End If
+    Next row
+End Function
+' 入力された選手の試合一覧を取得する
+' 一覧を修正画面上に表示
+' 変更されたスコアを探す
+' 勝敗が変わるかどうかのチェック
+' 勝敗が変わらない場合、トーナメントシートにスコアを記載、黒線を引く、赤線を引く、で対応終了
+' 勝敗が変わる場合、その先の試合が終了済みか確認
+' 先の試合が始まっていない場合は、上記同様処理、採点票の状態を確認、印刷済みだったら、再印刷をかけるか聞く。再印刷する場合は、採点表ボタンを押すように指示
+' 先の試合が終了済みの場合は、終了済みの試合を一覧で取得。この場合、対象選手が関わった試合のみを見るのか、トーナメントの最後まで見るのか...
+' 次のように変更されますが、よろしいですか。それとも、この試合の結果を破棄
+' N ○○ スコア 対 スコア ○○ N　→　N ○○ スコア 対 スコア △△ M
+Sub aiu()
+    setUp
+    MsgBox findResult(1).winner
+End Sub

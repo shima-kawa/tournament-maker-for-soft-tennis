@@ -46,7 +46,7 @@ Sub startEditMode()
     
     ' エントリー名簿シートの確認----------------------------------------------------------------
     If (flgExsistSheet("エントリー名簿") = False) Then
-        Worksheets.Add after:=Sheets(Worksheets.count)
+        Worksheets.Add after:=Sheets(Worksheets.Count)
         ActiveSheet.Name = "エントリー名簿"
         Set entryPlayersWS = ThisWorkbook.Worksheets("エントリー名簿")
         Call makeEntryPlayersSheet
@@ -65,7 +65,7 @@ Sub startEditMode()
     
     ' セルへの関数の挿入------------------------------------------------------------------------
     ' 左側
-    lastRow = tournamentWS.Cells(tournamentWS.Rows.count, leftEntryNumCol + 1).End(xlUp).row
+    lastRow = tournamentWS.Cells(tournamentWS.Rows.Count, leftEntryNumCol + 1).End(xlUp).row
     For i = 1 To lastRow Step 2
         With tournamentWS
             With .Range(.Cells(i, leftEntryNumCol), .Cells(i + 1, leftEntryNumCol))
@@ -82,7 +82,7 @@ Sub startEditMode()
     Next i
 
     ' 右側
-    lastRow = tournamentWS.Cells(tournamentWS.Rows.count, rightEntryNumCol - 1).End(xlUp).row
+    lastRow = tournamentWS.Cells(tournamentWS.Rows.Count, rightEntryNumCol - 1).End(xlUp).row
     For i = 1 To lastRow Step 2
         With tournamentWS
             With .Range(.Cells(i, rightEntryNumCol), .Cells(i + 1, rightEntryNumCol))
@@ -168,7 +168,7 @@ Function updatePlayerListFromTournament(leftEntryNumCol As Integer, rightEntryNu
     Dim p As player
     
     ' 左側
-    lastRow = tournamentWS.Cells(tournamentWS.Rows.count, leftEntryNumCol).End(xlUp).row
+    lastRow = tournamentWS.Cells(tournamentWS.Rows.Count, leftEntryNumCol).End(xlUp).row
     
     For row = 1 To lastRow
         If (tournamentWS.Cells(row, leftEntryNumCol) <> "" And tournamentWS.Cells(row, leftEntryNumCol + 1) <> "") Then
@@ -180,7 +180,7 @@ Function updatePlayerListFromTournament(leftEntryNumCol As Integer, rightEntryNu
     Next row
     
     ' 右側
-    lastRow = tournamentWS.Cells(tournamentWS.Rows.count, rightEntryNumCol).End(xlUp).row
+    lastRow = tournamentWS.Cells(tournamentWS.Rows.Count, rightEntryNumCol).End(xlUp).row
     
     For row = 1 To lastRow
         If (tournamentWS.Cells(row, rightEntryNumCol) <> "" And tournamentWS.Cells(row, rightEntryNumCol - 1) <> "") Then
@@ -199,7 +199,7 @@ Function findEntryPlayer(key As Integer) As player
     
     Set p = New player
     
-    lastRow = entryPlayersWS.Cells(entryPlayersWS.Rows.count, 1).End(xlUp).row
+    lastRow = entryPlayersWS.Cells(entryPlayersWS.Rows.Count, 1).End(xlUp).row
     
     For row = 1 To lastRow
         If (entryPlayersWS.Cells(row, 1) = key) Then

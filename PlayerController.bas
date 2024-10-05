@@ -11,7 +11,7 @@ Sub insertPlayerInformation()
     
     Dim p As player
 
-    xlLastRow = playerListWS.Cells(Rows.count, plgNoCol).row
+    xlLastRow = playerListWS.Cells(Rows.Count, plgNoCol).row
     lastRow = playerListWS.Cells(xlLastRow, plgNoCol).End(xlUp).row
     
     If (teamsRange.Value <> lastRow - 1) Then
@@ -21,7 +21,7 @@ Sub insertPlayerInformation()
     
     
     ' 左側
-    xlLastRow = tournamentWS.Cells(Rows.count, G_numLeftCol).row  'Excelの最終行を取得
+    xlLastRow = tournamentWS.Cells(Rows.Count, G_numLeftCol).row  'Excelの最終行を取得
     lastRow = tournamentWS.Cells(xlLastRow, G_numLeftCol).End(xlUp).row   '最終行を取得
     For row = 1 To lastRow Step 2
         Set p = findPlayer(tournamentWS.Cells(row, G_numLeftCol))
@@ -54,7 +54,7 @@ Sub insertPlayerInformation()
     Next row
     
     ' 右側
-    xlLastRow = tournamentWS.Cells(Rows.count, G_numRightCol).row  'Excelの最終行を取得
+    xlLastRow = tournamentWS.Cells(Rows.Count, G_numRightCol).row  'Excelの最終行を取得
     lastRow = tournamentWS.Cells(xlLastRow, G_numRightCol).End(xlUp).row   '最終行を取得
     For row = 1 To lastRow Step 2
         Set p = findPlayer(tournamentWS.Cells(row, G_numRightCol))
