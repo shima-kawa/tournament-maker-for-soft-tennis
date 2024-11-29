@@ -16,7 +16,7 @@ Sub makeTournament()
     Dim i As Integer
     Dim start As Integer
     Dim fin As Integer
-    Dim match As Integer
+    Dim Match As Integer
     Dim round As Integer
     Dim tournaments() As Integer
     Dim maxRowperPage As Integer ' 各ページの実際の最大組数を保存。配列生成時に使用 TODO 似た変数があるので、考慮
@@ -135,8 +135,8 @@ End With
         Debug.Print page & "ページ, 左側S=" & start & ", F=" & fin
         
         index = 1
-        For match = start To fin
-            If (baseMatchesWS.Cells(match, 4) = "UNDECIDED") Then ' 1回戦あり
+        For Match = start To fin
+            If (baseMatchesWS.Cells(Match, 4) = "UNDECIDED") Then ' 1回戦あり
                 row = (maxRowperPage * (page - 1) + index) * 2
                 With tournamentWS
                     With .Range(.Cells(row, G_startTournamentArea), .Cells(row + 1, G_startTournamentArea))
@@ -146,8 +146,8 @@ End With
                     End With
                     .Range(.Cells(row + 1, G_startTournamentArea + 1), .Cells(row + 1, G_startTournamentArea + 1)).Borders(xlEdgeTop).LineStyle = xlContinuous
                 End With
-                Call setAddress(match, LEFT, row - 1, G_startTournamentArea + 1)
-                Call setAddress(match, RIGHT, row + 2, G_startTournamentArea + 1)
+                Call setAddress(Match, LEFT, row - 1, G_startTournamentArea + 1)
+                Call setAddress(Match, RIGHT, row + 2, G_startTournamentArea + 1)
                 With tournamentWS
                     .Cells(row - 1, G_startTournamentArea + 1).HorizontalAlignment = xlLeft
                     .Cells(row - 1, G_startTournamentArea + 1).VerticalAlignment = xlBottom
@@ -162,7 +162,7 @@ End With
                 End With
                 index = index + 1 ' 1組分次へ
             End If
-        Next match
+        Next Match
         
         ' 右側
         start = baseTeams / 2 + (baseTeams / 4 / pageNum) * ((page - 1) * 2 + 1)
@@ -170,8 +170,8 @@ End With
         Debug.Print page & "ページ, 右側S=" & start & ", F=" & fin
         
         index = 1
-        For match = start To fin
-            If (baseMatchesWS.Cells(match, 4) = "UNDECIDED") Then ' 1回戦あり
+        For Match = start To fin
+            If (baseMatchesWS.Cells(Match, 4) = "UNDECIDED") Then ' 1回戦あり
                 row = (maxRowperPage * (page - 1) + index) * 2
                 With tournamentWS
                     With .Range(tournamentWS.Cells(row, G_endTournamentArea), tournamentWS.Cells(row + 1, G_endTournamentArea))
@@ -181,8 +181,8 @@ End With
                     End With
                     .Range(.Cells(row + 1, G_endTournamentArea - 1), .Cells(row + 1, G_endTournamentArea - 1)).Borders(xlEdgeTop).LineStyle = xlContinuous
                 End With
-                Call setAddress(match, LEFT, row - 1, G_endTournamentArea - 1)
-                Call setAddress(match, RIGHT, row + 2, G_endTournamentArea - 1)
+                Call setAddress(Match, LEFT, row - 1, G_endTournamentArea - 1)
+                Call setAddress(Match, RIGHT, row + 2, G_endTournamentArea - 1)
                 With tournamentWS
                     .Cells(row - 1, G_endTournamentArea - 1).HorizontalAlignment = xlRight
                     .Cells(row - 1, G_endTournamentArea - 1).VerticalAlignment = xlBottom
@@ -197,13 +197,13 @@ End With
                 End With
                 index = index + 1 ' 1組分次へ
             End If
-        Next match
+        Next Match
     Next page
     
     ' 2回戦以降
-    match = 64
+    Match = 64
     For round = 2 To roundEachPage - 1
-        match = baseTeams / (2 ^ round)
+        Match = baseTeams / (2 ^ round)
         For page = 1 To pageNum
             ' 左側
             For row = 1 + (maxRowperPage * (page - 1) * 2) To maxRowperPage * page * 2
@@ -212,25 +212,25 @@ End With
                     If (betweenTwoLinesFlg = False) Then
                         betweenTwoLinesFlg = True
                         betweenLinesStart = row
-                        Call setAddress(match, LEFT, row - 1, G_startTournamentArea + round)
+                        Call setAddress(Match, LEFT, row - 1, G_startTournamentArea + round)
                         With tournamentWS
                             .Cells(row - 1, G_startTournamentArea + round).HorizontalAlignment = xlLeft
                             .Cells(row - 1, G_startTournamentArea + round).VerticalAlignment = xlBottom
                         End With
                     Else
                         betweenTwoLinesFlg = False
-                        If (match Mod 2 = 0) Then
+                        If (Match Mod 2 = 0) Then
                             centerRow = culCenter(betweenLinesStart, row - 1, True)
                         Else
                             centerRow = culCenter(betweenLinesStart, row - 1, False)
                         End If
                         tournamentWS.Range(tournamentWS.Cells(centerRow, G_startTournamentArea + round), tournamentWS.Cells(centerRow, G_startTournamentArea + round)).Borders(xlEdgeTop).LineStyle = xlContinuous
-                        Call setAddress(match, RIGHT, row, G_startTournamentArea + round)
+                        Call setAddress(Match, RIGHT, row, G_startTournamentArea + round)
                         With tournamentWS
                             .Cells(row, G_startTournamentArea + round).HorizontalAlignment = xlLeft
                             .Cells(row, G_startTournamentArea + round).VerticalAlignment = xlTop
                         End With
-                        match = match + 1
+                        Match = Match + 1
                     End If
                 End If
                 If (betweenTwoLinesFlg = True) Then
@@ -245,26 +245,26 @@ End With
                     If (betweenTwoLinesFlg = False) Then
                         betweenTwoLinesFlg = True
                         betweenLinesStart = row
-                        Call setAddress(match, LEFT, row - 1, G_endTournamentArea - round)
+                        Call setAddress(Match, LEFT, row - 1, G_endTournamentArea - round)
                         With tournamentWS
                             .Cells(row - 1, G_endTournamentArea - round).HorizontalAlignment = xlRight
                             .Cells(row - 1, G_endTournamentArea - round).VerticalAlignment = xlBottom
                         End With
                     Else
                         betweenTwoLinesFlg = False
-                        If (match Mod 2 = 0) Then
+                        If (Match Mod 2 = 0) Then
                             centerRow = culCenter(betweenLinesStart, row - 1, True)
                         Else
                             centerRow = culCenter(betweenLinesStart, row - 1, False)
                         End If
                         tournamentWS.Range(tournamentWS.Cells(centerRow, G_endTournamentArea - round), tournamentWS.Cells(centerRow, G_endTournamentArea - round)).Borders(xlEdgeTop).LineStyle = xlContinuous
-                        Call setAddress(match, RIGHT, row, G_endTournamentArea - round)
+                        Call setAddress(Match, RIGHT, row, G_endTournamentArea - round)
                         With tournamentWS
                             .Cells(row, G_endTournamentArea - round).HorizontalAlignment = xlRight
                             .Cells(row, G_endTournamentArea - round).VerticalAlignment = xlTop
                         End With
 
-                        match = match + 1
+                        Match = Match + 1
                     End If
                 End If
                 If (betweenTwoLinesFlg = True) Then
@@ -276,7 +276,7 @@ End With
     
     ' 仕上げ
     Debug.Print "仕上げ"
-    match = baseTeams / (2 ^ roundEachPage)
+    Match = baseTeams / (2 ^ roundEachPage)
     For page = 1 To pageNum
         Debug.Print "page=" & page
         ' 各ページの最終ラウンドの罫線(横線)を合わせる-----------------------
@@ -301,9 +301,9 @@ End With
         With tournamentWS
             .Range(.Cells(leftRow, G_startTournamentArea + round - 1), .Cells(leftRow, G_endTournamentArea - round + 1)).Borders(xlEdgeTop).LineStyle = xlContinuous
         End With
-        Call setAddress(match, LEFT, leftRow, G_startTournamentArea + round - 2)
-        Call setAddress(match, RIGHT, leftRow, G_endTournamentArea - round + 2)
-        match = match + 1
+        Call setAddress(Match, LEFT, leftRow, G_startTournamentArea + round - 2)
+        Call setAddress(Match, RIGHT, leftRow, G_endTournamentArea - round + 2)
+        Match = Match + 1
         
         
         '各ページ外の対戦の罫線（決勝等）------------------------------------
@@ -357,7 +357,7 @@ End Sub
 Function getFirstTeamNumberEachPage(ByRef firstTeamNumberEachPage() As Integer, teams As Integer, pageNum As Integer)
     
     Dim step As Integer
-    Dim match As Integer
+    Dim Match As Integer
     Dim page As Integer
     Dim baseTeams As Integer
     
@@ -365,11 +365,11 @@ Function getFirstTeamNumberEachPage(ByRef firstTeamNumberEachPage() As Integer, 
     step = baseTeams / 2 / pageNum
     page = 1
     
-    For match = baseTeams / 2 To baseTeams - 1 Step step
-        firstTeamNumberEachPage(page, LEFT) = getLeftLimit(match) ' ページ左側
-        firstTeamNumberEachPage(page, RIGHT) = getLeftLimit(match + step / 2) ' ページ右側
+    For Match = baseTeams / 2 To baseTeams - 1 Step step
+        firstTeamNumberEachPage(page, LEFT) = getLeftLimit(Match) ' ページ左側
+        firstTeamNumberEachPage(page, RIGHT) = getLeftLimit(Match + step / 2) ' ページ右側
         page = page + 1
-    Next match
+    Next Match
 
 End Function
 
@@ -451,15 +451,30 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
 
     Dim startCol As Integer
     Dim center As Integer
-    
-    startCol = col
-    
+        
     center = culCenter(startRow, endRow, (baseMatchID Mod 2 = 0))
     
+    ' 黒線(初期化)
+    startCol = col
+    Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, LEFT, whichSide)
+    Call drawBlackBorders(startRow, center - 1, startCol, col, xlEdgeTop)
+    startCol = col
+    Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, RIGHT, whichSide)
+    Call drawBlackBorders(center, endRow, startCol, col, xlEdgeBottom)
+    If (whichSide = LEFT) Then
+        Call drawBlackBorders(startRow, endRow, startCol, col, xlEdgeRight)
+        Call drawRedBorders(center, center, col + 1, col + 1, xlEdgeTop)
+    Else
+        Call drawBlackBorders(startRow, endRow, startCol, col, xlEdgeLeft)
+        Call drawRedBorders(center, center, col - 1, col - 1, xlEdgeTop)
+    End If
+    
     ' 横方向の罫線の幅の調整
+    startCol = col
     Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, winningSide, whichSide)
     MsgBox "startCol=" & startCol & ", col=" & col
     
+    ' 赤線
     If (whichSide = LEFT) Then
         If (winningSide = LEFT) Then
             Call drawRedBorders(startRow, center - 1, startCol, col, xlEdgeRight)
@@ -543,6 +558,15 @@ Function drawRedBorders(startRow As Integer, endRow As Integer, startCol As Inte
         .LineStyle = xlContinuous
         .Weight = xlMedium
         .Color = RGB(255, 0, 0)
+    End With
+End Function
+' 罫線を描画する。
+' 4つ角と罫線の位置を指定する、
+Function drawBlackBorders(startRow As Integer, endRow As Integer, startCol As Integer, endCol As Integer, selectedLine As XlBordersIndex)
+    With tournamentWS.Range(tournamentWS.Cells(startRow, startCol), tournamentWS.Cells(endRow, endCol)).Borders(selectedLine)
+        .LineStyle = xlContinuous
+        .Weight = xlThin
+        .Color = RGB(0, 0, 0)
     End With
 End Function
 ' トーナメントのヘッダーを設定

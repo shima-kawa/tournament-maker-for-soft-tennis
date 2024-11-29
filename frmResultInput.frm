@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmResultInput 
    Caption         =   "結果登録"
-   ClientHeight    =   7575
+   ClientHeight    =   6120
    ClientLeft      =   150
    ClientTop       =   570
-   ClientWidth     =   13890
+   ClientWidth     =   11235
    OleObjectBlob   =   "frmResultInput.frx":0000
    StartUpPosition =   1  'オーナー フォームの中央
 End
@@ -14,7 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private leftNums(8) As Integer
-Private matches(8) As match
+Private matches(8) As Match
 Private Sub btnClose_Click()
     Unload Me
 End Sub
@@ -153,7 +153,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Function checkInputLeftNum(setID As Integer, ByRef Cancel As MSForms.ReturnBoolean)
-    Dim m As match
+    Dim m As Match
     Dim p As player
     Dim i As Integer
     
