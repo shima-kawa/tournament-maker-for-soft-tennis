@@ -8,8 +8,10 @@ Function registerResult(r As Result)
     Dim row As Integer
     Dim addressRow As Integer
     Dim addressCol As Integer
-    Dim m As match
+    Dim m As Match
     Dim whichWinner As Integer
+    
+    Debug.Print ("Regist: matchID: " & r.matchID & ", score: " & r.leftScore & "-" & r.rightScore & ", winner: " & r.winner)
     
     lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     'r.idを探す
@@ -19,11 +21,11 @@ Function registerResult(r As Result)
         End If
     Next row
     
-    'スコアを登録
+    '試合シートにスコアを登録
     matchesWS.Cells(row, G_scoreLeftCol) = r.leftScore
     matchesWS.Cells(row, G_scoreRightCol) = r.rightScore
     
-    '勝者登録
+    '試合シートに勝者を登録
     matchesWS.Cells(row, G_winnerCol) = r.winner
     If (matchesWS.Cells(row, G_leftCol) = r.winner) Then
         whichWinner = LEFT
@@ -31,7 +33,7 @@ Function registerResult(r As Result)
         whichWinner = RIGHT
     End If
     
-    'トーナメントに反映
+    'トーナメントシートに反映
     addressRow = matchesWS.Cells(row, G_addressLeftRowCol)
     addressCol = matchesWS.Cells(row, G_addressLeftColCol)
     If (whichWinner = LEFT) Then
@@ -62,10 +64,18 @@ Function registerResult(r As Result)
     matchesWS.Cells(addressRow, addressCol) = r.winner
     
     'ステータスの更新
+    Debug.Print ("Before Status of current: " & matchesWS.Cells(row, G_statusCol).Address(False, False) & " " & matchesWS.Cells(row, G_statusCol))
+    Debug.Print ("Before Status of next   : " & matchesWS.Cells(addressRow, G_statusCol).Address(False, False) & " " & matchesWS.Cells(addressRow, G_statusCol))
     matchesWS.Cells(row, G_statusCol) = MATCH_FINISHED
-    If (matchesWS.Cells(addressRow, G_leftCol) <> "" And matchesWS.Cells(addressRow, G_rightCol) <> "") Then
+    If ( _
+        matchesWS.Cells(addressRow, G_leftCol) <> "" And _
+        matchesWS.Cells(addressRow, G_rightCol) <> "" And _
+        matchesWS.Cells(addressRow, G_statusCol) <> MATCH_FINISHED _
+    ) Then
         matchesWS.Cells(addressRow, G_statusCol) = MATCH_ALLOWED_NOPRINT
     End If
+    Debug.Print ("After Status of current : " & matchesWS.Cells(row, G_statusCol).Address(False, False) & " " & matchesWS.Cells(row, G_statusCol))
+    Debug.Print ("After Status of next    : " & matchesWS.Cells(addressRow, G_statusCol).Address(False, False) & " " & matchesWS.Cells(addressRow, G_statusCol))
     
 End Function
 
@@ -73,18 +83,18 @@ End Function
 ' 引数のプログラムNoをキーに、試合を探す。見つかったら、試合オブジェクトを返す。
 ' 引数：若い方のプログラム番号
 ' 戻り値：検索結果の試合オブジェクト
-Function findMatch(key As Integer) As match
+Function findMatch(key As Integer) As Match
     
     ' ---------------------------------------------------
     Dim lastRow As Integer
     Dim row As Integer
-    Dim matchObj As match
+    Dim matchObj As Match
     
     lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     
     For row = 2 To lastRow
         If (matchesWS.Cells(row, G_statusCol) = MATCH_ALLOWED_PRINTED And matchesWS.Cells(row, G_leftCol) = key) Then
-            Set findMatch = New match
+            Set findMatch = New Match
             findMatch.matchID = matchesWS.Cells(row, G_idCol)
             findMatch.leftNum = matchesWS.Cells(row, G_leftCol)
             findMatch.rightNum = matchesWS.Cells(row, G_rightCol)
@@ -97,12 +107,12 @@ Function findMatch(key As Integer) As match
 End Function
 
 ' 指定したステータスの試合の検索
-Function findAllMatchesWithStatus(key As Integer, status As Integer) As match()
+Function findAllMatchesWithStatus(key As Integer, status As Integer) As Match()
 
     Dim lastRow As Integer
     Dim row As Integer
-    Dim matchObj As match
-    Dim matches() As match
+    Dim matchObj As Match
+    Dim matches() As Match
     Dim index As Integer
 
     lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
@@ -115,7 +125,7 @@ Function findAllMatchesWithStatus(key As Integer, status As Integer) As match()
         If (matchesWS.Cells(row, G_statusCol) = status And (matchesWS.Cells(row, G_leftCol) = key Or matchesWS.Cells(row, G_rightCol) = key)) Then
             index = index + 1
             ReDim Preserve matches(index)
-            Set matches(index) = New match
+            Set matches(index) = New Match
             matches(index).matchID = matchesWS.Cells(row, G_idCol)
             matches(index).leftNum = matchesWS.Cells(row, G_leftCol)
             matches(index).rightNum = matchesWS.Cells(row, G_rightCol)

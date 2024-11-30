@@ -31,7 +31,7 @@ setUp
 Dim i As Integer
 Dim teams As Integer
 Dim basePlayerId As Integer
-Dim playerId As Integer
+Dim playerID As Integer
 Dim seeds As New seedarray
 Dim baseTeams As Integer
 Dim startPlgNo As Integer
@@ -41,7 +41,7 @@ testWorksheet.Cells.Clear
 
 startPlgNo = plgStartNoRange.Value
 basePlayerId = 0
-playerId = 0
+playerID = 0
 teams = teamsRange
 baseTeams = culNumberOfBaseTeams(teams)
 
@@ -60,16 +60,16 @@ Next i
 For baseMatchID = baseTeams / 2 To baseTeams - 1
     basePlayerId = basePlayerId + 1
     If (seeds.seed(basePlayerId) <= teams) Then
-        playerId = playerId + 1
-        testWorksheet.Cells(baseMatchID, 2) = playerId + startPlgNo - 1
+        playerID = playerID + 1
+        testWorksheet.Cells(baseMatchID, 2) = playerID + startPlgNo - 1
     Else
         testWorksheet.Cells(baseMatchID, 2) = 0
     End If
     
     basePlayerId = basePlayerId + 1
     If (seeds.seed(basePlayerId) <= teams) Then
-        playerId = playerId + 1
-        testWorksheet.Cells(baseMatchID, 3) = playerId + startPlgNo - 1
+        playerID = playerID + 1
+        testWorksheet.Cells(baseMatchID, 3) = playerID + startPlgNo - 1
     Else
         testWorksheet.Cells(baseMatchID, 3) = 0
     End If
@@ -94,7 +94,7 @@ Function makeMaches(teams As Integer)
 Dim baseTeams As Integer
 Dim needRounds As Integer
 Dim round As Integer
-Dim match As Integer
+Dim Match As Integer
 Dim i As Integer
 Dim row As Integer
 
@@ -125,36 +125,36 @@ matchesWS.Cells(row, G_LRCol) = "LR"
 row = row + 1
 
 For round = 1 To needRounds
-    For match = baseTeams / (2 ^ round) To baseTeams / (2 ^ (round - 1)) - 1
-        If (baseMatchesWS.Cells(match, 4) = "UNDECIDED") Then
-            If (baseMatchesWS.Cells(match, 2) = "UNDECIDED" Or baseMatchesWS.Cells(match, 3) = "UNDECIDED") Then
+    For Match = baseTeams / (2 ^ round) To baseTeams / (2 ^ (round - 1)) - 1
+        If (baseMatchesWS.Cells(Match, 4) = "UNDECIDED") Then
+            If (baseMatchesWS.Cells(Match, 2) = "UNDECIDED" Or baseMatchesWS.Cells(Match, 3) = "UNDECIDED") Then
                 matchesWS.Cells(row, G_idCol) = row - 1
-                matchesWS.Cells(row, G_fromCol) = getLeftLimit(match)
-                matchesWS.Cells(row, G_toCol) = getRightLimit(match)
-                matchesWS.Cells(row, G_baseMatchIdCol) = match
+                matchesWS.Cells(row, G_fromCol) = getLeftLimit(Match)
+                matchesWS.Cells(row, G_toCol) = getRightLimit(Match)
+                matchesWS.Cells(row, G_baseMatchIdCol) = Match
                 matchesWS.Cells(row, G_roundCol) = round
                 matchesWS.Cells(row, G_statusCol) = MATCH_NOT_ALLOWED
                 matchesWS.Cells(row, G_matchGamesCol) = 7 ' temp
-                If (baseMatchesWS.Cells(match, 2) <> "UNDECIDED" And baseMatchesWS.Cells(match, 3) = "UNDECIDED") Then ' LEFTが不戦勝
-                    matchesWS.Cells(row, G_leftCol) = baseMatchesWS.Cells(match, 2)
-                ElseIf (baseMatchesWS.Cells(match, 2) = "UNDECIDED" And baseMatchesWS.Cells(match, 3) <> "UNDECIDED") Then
-                    matchesWS.Cells(row, G_rightCol) = baseMatchesWS.Cells(match, 3)
+                If (baseMatchesWS.Cells(Match, 2) <> "UNDECIDED" And baseMatchesWS.Cells(Match, 3) = "UNDECIDED") Then ' LEFTが不戦勝
+                    matchesWS.Cells(row, G_leftCol) = baseMatchesWS.Cells(Match, 2)
+                ElseIf (baseMatchesWS.Cells(Match, 2) = "UNDECIDED" And baseMatchesWS.Cells(Match, 3) <> "UNDECIDED") Then
+                    matchesWS.Cells(row, G_rightCol) = baseMatchesWS.Cells(Match, 3)
                 End If
                 row = row + 1
             Else
                 matchesWS.Cells(row, G_idCol) = row - 1
-                matchesWS.Cells(row, G_fromCol) = getLeftLimit(match)
-                matchesWS.Cells(row, G_toCol) = getRightLimit(match)
-                matchesWS.Cells(row, G_baseMatchIdCol) = match
+                matchesWS.Cells(row, G_fromCol) = getLeftLimit(Match)
+                matchesWS.Cells(row, G_toCol) = getRightLimit(Match)
+                matchesWS.Cells(row, G_baseMatchIdCol) = Match
                 matchesWS.Cells(row, G_roundCol) = round
                 matchesWS.Cells(row, G_statusCol) = MATCH_ALLOWED_NOPRINT
-                matchesWS.Cells(row, G_leftCol) = getLeftLimit(match)
-                matchesWS.Cells(row, G_rightCol) = getRightLimit(match)
+                matchesWS.Cells(row, G_leftCol) = getLeftLimit(Match)
+                matchesWS.Cells(row, G_rightCol) = getRightLimit(Match)
                 matchesWS.Cells(row, G_matchGamesCol) = 7 ' temp
                 row = row + 1
             End If
         End If
-    Next match
+    Next Match
 Next round
 
 Call determineNextAddress
@@ -173,22 +173,22 @@ Function updateBaseMatches(baseMatches As Integer)
     Next i
 End Function
 
-Function getLeftLimit(ByVal match As Integer) As Integer
+Function getLeftLimit(ByVal Match As Integer) As Integer
     
-    While baseMatchesWS.Cells(match, 2) = "UNDECIDED"
-        match = match * 2
+    While baseMatchesWS.Cells(Match, 2) = "UNDECIDED"
+        Match = Match * 2
     Wend
     
-    getLeftLimit = baseMatchesWS.Cells(match, 2)
+    getLeftLimit = baseMatchesWS.Cells(Match, 2)
 End Function
 
-Function getRightLimit(ByVal match As Integer) As Integer
+Function getRightLimit(ByVal Match As Integer) As Integer
     
-    While baseMatchesWS.Cells(match, 3) = "UNDECIDED"
-        match = match * 2 + 1
+    While baseMatchesWS.Cells(Match, 3) = "UNDECIDED"
+        Match = Match * 2 + 1
     Wend
     
-    getRightLimit = baseMatchesWS.Cells(match, 3)
+    getRightLimit = baseMatchesWS.Cells(Match, 3)
 End Function
 
 Function getRequiredGames(game As Integer) As Integer
@@ -276,11 +276,9 @@ End Function
 Sub a()
     setUp
     'Call insertProgramNumber(plgStartNoRange.Value, teamsRange.Value)
-    MsgBox "エラー。対象の試合が見つかりませんでした。", _
-        Buttons:=vbExclamation, _
-        Title:="エラー"
 
     'Call changeNumOfGames(1, 5)
+    Debug.Print getFirstMatchID(10)
 End Sub
 ' 指定したラウンド(round 回戦)のゲーム数を変更する
 Function changeNumOfGames(round As Integer, numGames As Integer)
@@ -334,3 +332,39 @@ Function changeNumOfGames(round As Integer, numGames As Integer)
 
 End Function
 
+Function getNextMatchStatus(matchID As Integer) As Integer
+    Dim row As Integer
+    Dim lastRow As Integer
+    Dim nextRow As Integer
+    
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
+    
+    
+    For row = 2 To lastRow
+        If (matchesWS.Cells(row, G_idCol).Value = matchID) Then
+            nextRow = matchesWS.Cells(row, G_nextMatchRowCol).Value
+            Exit For
+        End If
+    Next row
+    
+    getNextMatchStatus = matchesWS.Cells(nextRow, G_statusCol)
+    
+End Function
+
+Function getFirstMatchID(playerID As Integer) As Integer
+    Dim row As Integer
+    Dim lastRow As Integer
+    Dim startPlgNum As Integer
+    Dim endPlgNum As Integer
+    
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
+    
+    For row = 2 To lastRow
+        startPlgNum = matchesWS.Cells(row, G_fromCol).Value
+        endPlgNum = matchesWS.Cells(row, G_toCol).Value
+        If (playerID >= startPlgNum And playerID <= endPlgNum) Then
+            getFirstMatchID = matchesWS.Cells(row, G_idCol).Value
+            Exit Function
+        End If
+    Next row
+End Function

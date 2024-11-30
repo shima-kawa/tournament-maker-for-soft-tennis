@@ -5,4 +5,6 @@ End Sub
 Sub numGamesChangeformShow()
     frmChangeNumGames.Show
 End Sub
-
+Sub correctResultsShow()
+    frmCorrectScore.Show
+End Sub
