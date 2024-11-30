@@ -59,9 +59,11 @@ Function registerResult(r As Result)
     End If
     
     '次対戦の登録
-    addressRow = matchesWS.Cells(row, G_nextMatchRowCol)
-    addressCol = matchesWS.Cells(row, G_nextMatchColCol)
-    matchesWS.Cells(addressRow, addressCol) = r.winner
+    If culNumberOfNeedRounds(teamsRange.Value) <> matchesWS.Cells(row, G_roundCol) Then ' 決勝以外
+        addressRow = matchesWS.Cells(row, G_nextMatchRowCol)
+        addressCol = matchesWS.Cells(row, G_nextMatchColCol)
+        matchesWS.Cells(addressRow, addressCol) = r.winner
+    End If
     
     'ステータスの更新
     Debug.Print ("Before Status of current: " & matchesWS.Cells(row, G_statusCol).Address(False, False) & " " & matchesWS.Cells(row, G_statusCol))
