@@ -11,6 +11,8 @@ Function registerResult(r As Result)
     Dim m As Match
     Dim whichWinner As Integer
     
+    Debug.Print ("Regist: matchID: " & r.matchID & ", score: " & r.leftScore & "-" & r.rightScore & ", winner: " & r.winner)
+    
     lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     'r.idを探す
     For row = 1 To lastRow
@@ -62,10 +64,18 @@ Function registerResult(r As Result)
     matchesWS.Cells(addressRow, addressCol) = r.winner
     
     'ステータスの更新
+    Debug.Print ("Before Status of current: " & matchesWS.Cells(row, G_statusCol).Address(False, False) & " " & matchesWS.Cells(row, G_statusCol))
+    Debug.Print ("Before Status of next   : " & matchesWS.Cells(addressRow, G_statusCol).Address(False, False) & " " & matchesWS.Cells(addressRow, G_statusCol))
     matchesWS.Cells(row, G_statusCol) = MATCH_FINISHED
-    If (matchesWS.Cells(addressRow, G_leftCol) <> "" And matchesWS.Cells(addressRow, G_rightCol) <> "") Then
+    If ( _
+        matchesWS.Cells(addressRow, G_leftCol) <> "" And _
+        matchesWS.Cells(addressRow, G_rightCol) <> "" And _
+        matchesWS.Cells(addressRow, G_statusCol) <> MATCH_FINISHED _
+    ) Then
         matchesWS.Cells(addressRow, G_statusCol) = MATCH_ALLOWED_NOPRINT
     End If
+    Debug.Print ("After Status of current : " & matchesWS.Cells(row, G_statusCol).Address(False, False) & " " & matchesWS.Cells(row, G_statusCol))
+    Debug.Print ("After Status of next    : " & matchesWS.Cells(addressRow, G_statusCol).Address(False, False) & " " & matchesWS.Cells(addressRow, G_statusCol))
     
 End Function
 

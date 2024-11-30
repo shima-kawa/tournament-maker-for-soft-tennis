@@ -497,6 +497,7 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
     End Select
     
     ' cA’†‰›‚ÌŒrü „¥
+    startCol = col
     If (whichSide = LEFT) Then
         Call drawBlackBorders(startRow, endRow, startCol, col, xlEdgeRight)
         Call drawBlackBorders(center, center, col + 1, col + 1, xlEdgeTop)
