@@ -451,30 +451,68 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
 
     Dim startCol As Integer
     Dim center As Integer
+    Dim round As Integer
         
     center = culCenter(startRow, endRow, (baseMatchID Mod 2 = 0))
     
-    ' 黒線(初期化)
-    startCol = col
-    Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, LEFT, whichSide)
-    Call drawBlackBorders(startRow, center - 1, startCol, col, xlEdgeTop)
-    startCol = col
-    Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, RIGHT, whichSide)
-    Call drawBlackBorders(center, endRow, startCol, col, xlEdgeBottom)
+    ' 黒線(初期化) ####################################################################################################################
+    
+    ' 黒線描画を関数で抜き出して、罫線リセット用関数とするといいかもしれない。MatchIDを引数にして。
+    '1回戦：上・下・左or右・中央を黒
+    '2回戦：2セル続いている上下・左or右・中央を黒
+    '3回戦以降：左or右・中央線を黒
+    
+    round = culNumberOfNeedRounds(teamsRange.Value) - WorksheetFunction.RoundUp(Log(baseMatchID + 1) / Log(2), 0) + 1
+    Select Case round
+        Case 1
+            Debug.Print ("1回戦の処理")
+            ' 左側プレイヤーの罫線 ┐
+            startCol = col
+            Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, LEFT, whichSide)
+            Call drawBlackBorders(startRow, center - 1, startCol, col, xlEdgeTop)
+            ' 右側プレイヤーの罫線 ┘
+            startCol = col
+            Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, RIGHT, whichSide)
+            Call drawBlackBorders(center, endRow, startCol, col, xlEdgeBottom)
+            
+        Case 2
+            Debug.Print ("2回戦の処理")
+            ' 左側プレイヤーの罫線 ┐
+            startCol = col
+            Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, LEFT, whichSide)
+            If startCol <> col Then
+                '2セル分(=startColとcolが不一致)の場合のみ黒線
+                Call drawBlackBorders(startRow, center - 1, startCol, col, xlEdgeTop)
+            End If
+            
+            ' 右側プレイヤーの罫線 ┘
+            startCol = col
+            Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, RIGHT, whichSide)
+            If startCol <> col Then
+                '2セル分(=startColとcolが不一致)の場合のみ黒線
+                Call drawBlackBorders(center, endRow, startCol, col, xlEdgeBottom)
+            End If
+        Case Else
+            Debug.Print ("3回戦以降の処理")
+    End Select
+    
+    ' 縦、中央の罫線 ├
     If (whichSide = LEFT) Then
         Call drawBlackBorders(startRow, endRow, startCol, col, xlEdgeRight)
-        Call drawRedBorders(center, center, col + 1, col + 1, xlEdgeTop)
+        Call drawBlackBorders(center, center, col + 1, col + 1, xlEdgeTop)
+
     Else
         Call drawBlackBorders(startRow, endRow, startCol, col, xlEdgeLeft)
-        Call drawRedBorders(center, center, col - 1, col - 1, xlEdgeTop)
+        Call drawBlackBorders(center, center, col - 1, col - 1, xlEdgeTop)
     End If
+
     
+    ' 赤線 ############################################################################################################################
     ' 横方向の罫線の幅の調整
     startCol = col
     Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, winningSide, whichSide)
-    MsgBox "startCol=" & startCol & ", col=" & col
     
-    ' 赤線
+
     If (whichSide = LEFT) Then
         If (winningSide = LEFT) Then
             Call drawRedBorders(startRow, center - 1, startCol, col, xlEdgeRight)
@@ -498,24 +536,6 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
     End If
 End Function
 
-Sub abcde()
-    setUp
-    Call drawResultLine(2, 2, 4, 7, LEFT, LEFT)
-    Call drawResultLine(33, 4, 5, 6, LEFT, LEFT)
-    Call drawResultLine(38, 22, 23, 6, RIGHT, LEFT)
-    Call drawResultLine(9, 17, 24, 8, RIGHT, LEFT)
-    Call drawResultLine(4, 7, 20, 9, RIGHT, LEFT)
-    Call drawResultLine(19, 23, 25, 7, LEFT, LEFT)
-'    Call drawResultLine(18, 19, 6, RIGHT, LEFT)
-'    Call drawResultLine(16, 18, 7, LEFT, LEFT)
-'    Call drawResultLine(51, 53, 7, RIGHT, LEFT)
-'    Call drawResultLine(4, 5, 19, LEFT, RIGHT)
-'    Call drawResultLine(2, 4, 18, LEFT, RIGHT)
-'    Call drawResultLine(8, 9, 19, LEFT, RIGHT)
-'    Call drawResultLine(12, 13, 19, RIGHT, RIGHT)
-'    Call drawResultLine(9, 12, 18, LEFT, RIGHT)
-'    Call drawResultLine(3, 10, 17, LEFT, RIGHT)
-End Sub
 ' 2線間の中央を算出する。
 ' 戻り値行のBorder(xlTop)に罫線を引くこと。
 ' 引数：2線間の内側2セルの行番号

@@ -19,11 +19,11 @@ Function registerResult(r As Result)
         End If
     Next row
     
-    'スコアを登録
+    '試合シートにスコアを登録
     matchesWS.Cells(row, G_scoreLeftCol) = r.leftScore
     matchesWS.Cells(row, G_scoreRightCol) = r.rightScore
     
-    '勝者登録
+    '試合シートに勝者を登録
     matchesWS.Cells(row, G_winnerCol) = r.winner
     If (matchesWS.Cells(row, G_leftCol) = r.winner) Then
         whichWinner = LEFT
@@ -31,7 +31,7 @@ Function registerResult(r As Result)
         whichWinner = RIGHT
     End If
     
-    'トーナメントに反映
+    'トーナメントシートに反映
     addressRow = matchesWS.Cells(row, G_addressLeftRowCol)
     addressCol = matchesWS.Cells(row, G_addressLeftColCol)
     If (whichWinner = LEFT) Then
