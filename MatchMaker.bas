@@ -22,6 +22,34 @@ Function culNumberOfBaseTeams(teams As Integer) As Integer
     culNumberOfBaseTeams = 2 ^ culNumberOfNeedRounds(teams)
 End Function
 
+' baseMatchIDの試合が何回戦目かを返す
+' 引数: baseMatchID
+' 戻り値: round
+' ex) teams:65~128 -> baseMatchID=16 -> round=3
+Function culRound(baseMatchID As Integer) As Integer
+    Dim teams As Integer
+    Dim requiredRounds As Integer
+    
+    teams = teamsRange
+    requiredRounds = culNumberOfNeedRounds(teams)
+    
+    culRound = requiredRounds - WorksheetFunction.RoundDown(Log(baseMatchID) / Log(2), 0)
+End Function
+
+' そのラウンド(N回戦)の総試合数を返す
+' 引数: round
+' 戻り値: そのroundの試合数
+' ex) teams:65~128 -> round=4 -> returns 8
+Function culMatchesPerRound(round As Integer)
+    Dim teams As Integer
+    Dim requiredRounds As Integer
+    
+    teams = teamsRange
+    requiredRounds = culNumberOfNeedRounds(teams)
+    
+    culMatchesPerRound = 2 ^ (requiredRounds - round)
+    
+End Function
 
 Sub test()
 
@@ -196,7 +224,7 @@ Function getRequiredGames(game As Integer) As Integer
 End Function
 
 ' 試合シートに、結果を出力するトーナメントシート上の座標を保存する
-' 引数：baseMatchId, 各座標
+' 引数：baseMatchId, selectedSide(プレイヤーのサイド), 各座標
 Function setAddress(baseMatchID As Integer, selectedSide As Integer, row As Integer, col As Integer)
     Dim lastRow As Integer
     Dim i As Integer
@@ -278,7 +306,7 @@ Sub a()
     'Call insertProgramNumber(plgStartNoRange.Value, teamsRange.Value)
 
     'Call changeNumOfGames(1, 5)
-    Debug.Print getFirstMatchID(10)
+    Debug.Print culMatchesPerRound(culRound(7))
 End Sub
 ' 指定したラウンド(round 回戦)のゲーム数を変更する
 Function changeNumOfGames(round As Integer, numGames As Integer)
