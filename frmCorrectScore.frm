@@ -2,7 +2,7 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmCorrectScore 
    Caption         =   "ÉXÉRÉAí˘ê≥"
    ClientHeight    =   4830
-   ClientLeft      =   150
+   ClientLeft      =   156
    ClientTop       =   480
    ClientWidth     =   8160
    OleObjectBlob   =   "frmCorrectScore.frx":0000

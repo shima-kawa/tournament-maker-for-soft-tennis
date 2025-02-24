@@ -450,10 +450,10 @@ End Function
 Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As Integer, col As Integer, winningSide As Integer, whichSide As Integer)
 
     Dim startCol As Integer
-    Dim center As Integer
+    Dim centerRow As Integer
     Dim round As Integer
         
-    center = culCenter(startRow, endRow, (baseMatchID Mod 2 = 0))
+    centerRow = culCenter(startRow, endRow, (baseMatchID Mod 2 = 0))
     
     ' 黒線(初期化) ####################################################################################################################
     
@@ -469,11 +469,11 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
             ' 左側プレイヤーの罫線 ┐
             startCol = col
             Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, LEFT, whichSide)
-            Call drawBlackBorders(startRow, center - 1, startCol, col, xlEdgeTop)
+            Call drawBlackBorders(startRow, centerRow - 1, startCol, col, xlEdgeTop)
             ' 右側プレイヤーの罫線 ┘
             startCol = col
             Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, RIGHT, whichSide)
-            Call drawBlackBorders(center, endRow, startCol, col, xlEdgeBottom)
+            Call drawBlackBorders(centerRow, endRow, startCol, col, xlEdgeBottom)
             
         Case 2
             Debug.Print ("2回戦の処理")
@@ -482,7 +482,7 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
             Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, LEFT, whichSide)
             If startCol <> col Then
                 '2セル分(=startColとcolが不一致)の場合のみ黒線
-                Call drawBlackBorders(startRow, center - 1, startCol, col, xlEdgeTop)
+                Call drawBlackBorders(startRow, centerRow - 1, startCol, col, xlEdgeTop)
             End If
             
             ' 右側プレイヤーの罫線 ┘
@@ -490,7 +490,7 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
             Call adjustStartColForSide(startCol, startRow, endRow, col, xlEdgeTop, xlEdgeBottom, RIGHT, whichSide)
             If startCol <> col Then
                 '2セル分(=startColとcolが不一致)の場合のみ黒線
-                Call drawBlackBorders(center, endRow, startCol, col, xlEdgeBottom)
+                Call drawBlackBorders(centerRow, endRow, startCol, col, xlEdgeBottom)
             End If
         Case Else
             Debug.Print ("3回戦以降の処理")
@@ -500,11 +500,11 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
     startCol = col
     If (whichSide = LEFT) Then
         Call drawBlackBorders(startRow, endRow, startCol, col, xlEdgeRight)
-        Call drawBlackBorders(center, center, col + 1, col + 1, xlEdgeTop)
+        Call drawBlackBorders(centerRow, centerRow, col + 1, col + 1, xlEdgeTop)
 
     Else
         Call drawBlackBorders(startRow, endRow, startCol, col, xlEdgeLeft)
-        Call drawBlackBorders(center, center, col - 1, col - 1, xlEdgeTop)
+        Call drawBlackBorders(centerRow, centerRow, col - 1, col - 1, xlEdgeTop)
     End If
 
     
@@ -516,23 +516,23 @@ Function drawResultLine(baseMatchID As Integer, startRow As Integer, endRow As I
 
     If (whichSide = LEFT) Then
         If (winningSide = LEFT) Then
-            Call drawRedBorders(startRow, center - 1, startCol, col, xlEdgeRight)
-            Call drawRedBorders(startRow, center - 1, startCol, col, xlEdgeTop)
-            Call drawRedBorders(center, center, col + 1, col + 1, xlEdgeTop)
+            Call drawRedBorders(startRow, centerRow - 1, startCol, col, xlEdgeRight)
+            Call drawRedBorders(startRow, centerRow - 1, startCol, col, xlEdgeTop)
+            Call drawRedBorders(centerRow, centerRow, col + 1, col + 1, xlEdgeTop)
         Else
-            Call drawRedBorders(center, endRow, startCol, col, xlEdgeRight)
-            Call drawRedBorders(center, endRow, startCol, col, xlEdgeBottom)
-            Call drawRedBorders(center, center, col + 1, col + 1, xlEdgeTop)
+            Call drawRedBorders(centerRow, endRow, startCol, col, xlEdgeRight)
+            Call drawRedBorders(centerRow, endRow, startCol, col, xlEdgeBottom)
+            Call drawRedBorders(centerRow, centerRow, col + 1, col + 1, xlEdgeTop)
         End If
     Else
         If (winningSide = LEFT) Then
-            Call drawRedBorders(startRow, center - 1, col, startCol, xlEdgeLeft)
-            Call drawRedBorders(startRow, center - 1, col, startCol, xlEdgeTop)
-            Call drawRedBorders(center, center, col - 1, col - 1, xlEdgeTop)
+            Call drawRedBorders(startRow, centerRow - 1, col, startCol, xlEdgeLeft)
+            Call drawRedBorders(startRow, centerRow - 1, col, startCol, xlEdgeTop)
+            Call drawRedBorders(centerRow, centerRow, col - 1, col - 1, xlEdgeTop)
         Else
-            Call drawRedBorders(center, endRow, col, startCol, xlEdgeLeft)
-            Call drawRedBorders(center, endRow, col, startCol, xlEdgeBottom)
-            Call drawRedBorders(center, center, col - 1, col - 1, xlEdgeTop)
+            Call drawRedBorders(centerRow, endRow, col, startCol, xlEdgeLeft)
+            Call drawRedBorders(centerRow, endRow, col, startCol, xlEdgeBottom)
+            Call drawRedBorders(centerRow, centerRow, col - 1, col - 1, xlEdgeTop)
         End If
     End If
 End Function

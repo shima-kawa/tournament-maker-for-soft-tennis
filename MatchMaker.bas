@@ -396,3 +396,40 @@ Function getFirstMatchID(playerID As Integer) As Integer
         End If
     Next row
 End Function
+' 試合シートのLRC列を決定する
+Function setLRC()
+setUp
+    Dim row As Integer
+    Dim lastRow As Integer
+    Dim baseMatcheID As Integer
+    Dim round As Integer
+    Dim necessaryRounds As Integer
+    Dim baseTeams As Integer
+    Dim numPage As Integer
+    Dim numDivisions As Integer
+    Dim LRC As Integer
+    
+    necessaryRounds = culNumberOfNeedRounds(teamsRange.Value)
+    baseTeams = culNumberOfBaseTeams(teamsRange.Value)
+    numPage = getPageNumber(baseTeams, maxNumPerPageRange.Value)
+    numDivisions = numPage * 2 ' ページごとに左右があるため、numPage*2
+    
+    lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
+    
+    For row = 2 To lastRow
+        baseMatcheID = matchesWS.Cells(row, G_baseMatchIdCol).Value
+        round = culRound(baseMatcheID)
+        LRC = WorksheetFunction.RoundDown(baseMatcheID / (baseTeams / WorksheetFunction.Power(2, round) / numDivisions), 0) Mod 2
+        If baseMatcheID < numPage Then
+            matchesWS.Cells(row, G_LRCol + 3) = "-"
+        ElseIf baseMatcheID < numPage * 2 Then
+            matchesWS.Cells(row, G_LRCol + 3) = CENTER
+        Else
+            If LRC = 0 Then
+                matchesWS.Cells(row, G_LRCol + 3) = LEFT
+            Else
+                matchesWS.Cells(row, G_LRCol + 3) = RIGHT
+            End If
+        End If
+    Next row
+End Function
