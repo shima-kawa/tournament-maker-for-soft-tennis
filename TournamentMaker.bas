@@ -274,6 +274,9 @@ End With
         Next page
     Next round
     
+    Call setLRC
+    
+    
     ' édè„Ç∞
     Debug.Print "édè„Ç∞"
     Match = baseTeams / (2 ^ roundEachPage)

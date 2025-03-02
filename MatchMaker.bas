@@ -228,15 +228,9 @@ End Function
 Function setAddress(baseMatchID As Integer, selectedSide As Integer, row As Integer, col As Integer)
     Dim lastRow As Integer
     Dim i As Integer
-    Dim side As Integer
     
     lastRow = matchesWS.Cells(matchesWS.Rows.Count, 1).End(xlUp).row
     
-    If (col < (G_endTournamentArea - G_startTournamentArea + 1) / 2 + G_startTournamentArea) Then
-        side = LEFT
-    Else
-        side = RIGHT
-    End If
 
     For i = 1 To lastRow
         If (matchesWS.Cells(i, G_baseMatchIdCol) = baseMatchID) Then
@@ -244,13 +238,11 @@ Function setAddress(baseMatchID As Integer, selectedSide As Integer, row As Inte
                 With matchesWS
                     .Cells(i, G_addressLeftRowCol) = row
                     .Cells(i, G_addressLeftColCol) = col
-                    .Cells(i, G_LRCol) = side
                 End With
             Else
                 With matchesWS
                     .Cells(i, G_addressRightRowCol) = row
                     .Cells(i, G_addressRightColCol) = col
-                    .Cells(i, G_LRCol) = side
                 End With
             End If
             Exit Function
@@ -421,14 +413,14 @@ setUp
         round = culRound(baseMatcheID)
         LRC = WorksheetFunction.RoundDown(baseMatcheID / (baseTeams / WorksheetFunction.Power(2, round) / numDivisions), 0) Mod 2
         If baseMatcheID < numPage Then
-            matchesWS.Cells(row, G_LRCol + 3) = "-"
+            matchesWS.Cells(row, G_LRCol) = "-"
         ElseIf baseMatcheID < numPage * 2 Then
-            matchesWS.Cells(row, G_LRCol + 3) = CENTER
+            matchesWS.Cells(row, G_LRCol) = CENTER
         Else
             If LRC = 0 Then
-                matchesWS.Cells(row, G_LRCol + 3) = LEFT
+                matchesWS.Cells(row, G_LRCol) = LEFT
             Else
-                matchesWS.Cells(row, G_LRCol + 3) = RIGHT
+                matchesWS.Cells(row, G_LRCol) = RIGHT
             End If
         End If
     Next row
