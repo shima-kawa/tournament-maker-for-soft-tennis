@@ -44,6 +44,7 @@ Public Const MATCH_FINISHED As Integer = 3
 
 Public Const LEFT As Integer = 0
 Public Const RIGHT As Integer = 1
+Public Const CENTER As Integer = 2
 
 ' トーナメントシート用
 Public Const G_numLeftCol As Integer = 1
